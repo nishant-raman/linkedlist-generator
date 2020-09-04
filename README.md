@@ -5,7 +5,7 @@ that allows you to generate and edit linked lists.
 
 Linked list generated are singly linked
 
-####Functionalities:
+#### Functionalities:
 
 1. Generate empty list with a user specified number of nodes
 2. Add nodes at any position of the list
