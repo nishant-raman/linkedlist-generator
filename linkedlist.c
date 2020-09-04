@@ -1,11 +1,30 @@
-// Linked List Assignment
+//  Linked List Generator 
+
+// todo:
+// 1. remove while(1) loops, find alternative
+// 2. reduce input conditions (instead of front middle and end,
+//    ask position and if exceeds number append at end. same for delete etc.
+// 3. Add data in nodes and functions to modify it
+// 4. 
+
 
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
-#define MAX_LEN 20
+//Macros for user-input commands as characters
 
+#define MAX_LEN 20
+#define HEAD 'h'
+#define TAIL 't'
+#define MIDDLE 'm'
+#define EXIT 'e'
+#define ADD 'a'
+#define DELETE 'd'
+#define COUNT 'c'
+#define INFO 'i'
+
+// Definition of node in list
 
 struct Node
 {
@@ -15,13 +34,15 @@ struct Node
 };  
 
 
-struct LinkedList
-{
-    struct Node* head;
-    struct Node* current;
-    struct Node* tail;
-};
+// struct LinkedList
+// {
+//     struct Node* head;
+//     struct Node* current;
+//     struct Node* tail;
+// };
 
+
+// Function declarations 
 
 void createLinkedList();
 struct Node* createNode();
@@ -52,19 +73,23 @@ int main()
                "Create new linked list(c), Exit program(e): ");
         scanf("%s", &cmd);
         
-        while((cmd!='c')&&(cmd!='e'))
+        while((cmd!=COUNT)&&(cmd!=EXIT))
         {
             printf("Please enter valid command: ");
             scanf("%s", &cmd);
         }
         
-        if(cmd=='c')
+        if(cmd==COUNT)
             createLinkedList();
 
         return 0;
     }
 }
 
+// The first function called in the program from main().
+// Generates linked list and waits for user input for
+// further actions. 
+// Accordingly calls functions.
 
 void createLinkedList()
 {
@@ -77,27 +102,27 @@ void createLinkedList()
  
     printf("\nList generated. Head at %p\n", head);
     char cmd = 0;
-    while(cmd!='e')
+    while(cmd!=EXIT)
     {
         printf("\nWhat next: add nodes(a), delete nodes(d), "
                "enter data(i), count nodes (c), exit (e): ");
         scanf("%s", &cmd);
         switch(cmd)
         {
-            case 'a':
+            case ADD:
                 addNodeParamSet(&head);
                 break;
-            case 'd':
+            case DELETE:
                 deleteNodeParamSet(&head);
                 break;
-            case 'i':
+            case INFO:
                 modifyListData(head);
                 break;
-            case 'c': ;
+            case COUNT: ;
                 int count = countNodes(head);
                 printf("There are %d nodes in the list.\n", count);
                 break;
-            case 'e':
+            case EXIT:
                 return;
             default:
                 printf("Enter valid key.\n");
@@ -106,6 +131,7 @@ void createLinkedList()
     
 }
 
+// Basic functions to create, add or delete nodes
 
 struct Node* createNode()
 {
@@ -145,6 +171,9 @@ int deleteNode(struct Node** currentadd, int num)
 }
 
 
+// This function takes input parameters and accordingly 
+// calls lower level functions to add nodes
+
 void addNodeParamSet(struct Node** headadd)
 {
     char cmd = 0;
@@ -162,11 +191,11 @@ void addNodeParamSet(struct Node** headadd)
            "front(h), end(t), middle(m), exit(e): ");
     scanf("%s", &cmd);
 
-    while(cmd!='e')
+    while(cmd!=EXIT)
     {
         switch(cmd)
         {
-            case 'h':
+            case HEAD:
                 nodenum = 0;
                 headadd = travelList(headadd, nodenum);
                 addNode(headadd, num);
@@ -174,10 +203,10 @@ void addNodeParamSet(struct Node** headadd)
                 printf("Added %d nodes at the front of list. "
                        "Head at %p\n", num, *headadd);
 
-                cmd = 'e';
+                cmd = EXIT;
                 break;
 
-            case 'm':
+            case MIDDLE:
                 printf("After how many nodes from the front (ex: 4)"
                        "or from the end (ex: -4) should nodes be inserted: ");
                 scanf("%d", &nodenum);
@@ -213,10 +242,10 @@ void addNodeParamSet(struct Node** headadd)
                 printf("Added %d nodes in the middle of list. "
                        "Head at %p\n", num, *headadd);
 
-                cmd = 'e';
+                cmd = EXIT;
                 break;
 
-            case 't': ;
+            case TAIL: ;
                 nodenum = -1;
 
                 currentadd = travelList(headadd, nodenum);
@@ -225,10 +254,10 @@ void addNodeParamSet(struct Node** headadd)
                 printf("Added %d nodes at the end of list. "
                        "Head at %p\n", num, *headadd);
                 
-                cmd = 'e';
+                cmd = EXIT;
                 break;
 
-            case 'e':
+            case EXIT:
                 break;
 
             default:
@@ -242,6 +271,9 @@ void addNodeParamSet(struct Node** headadd)
     return;
 }
 
+
+// This function takes input parameters and accordingly 
+// calls lower level functions to delete nodes
 
 void deleteNodeParamSet(struct Node** headadd)
 {
@@ -273,14 +305,14 @@ void deleteNodeParamSet(struct Node** headadd)
                 printf("Deleted complete list. "
                        "Head at %p\n", *headadd);
 
-                cmd = 'e';
+                cmd = EXIT;
                 break;
             }
         }
         break;
     }   
     
-    while(cmd!='e')
+    while(cmd!=EXIT)
     {
         printf("Where do you want node to be deleted from: "
                "front(h), end(t), middle(m), exit(e): ");
@@ -296,10 +328,10 @@ void deleteNodeParamSet(struct Node** headadd)
                 printf("Deleted %d node(s) from the front of list. "
                        "Head at %p\n", num, *headadd);
 
-                cmd = 'e';
+                cmd = EXIT;
                 break;
 
-            case 'm':
+            case MIDDLE:
                 printf("After how many nodes from the front (ex: 4)"
                        "or from the end (ex: -4) should nodes be deleted: ");
                 scanf("%d", &nodenum);
@@ -334,10 +366,10 @@ void deleteNodeParamSet(struct Node** headadd)
                 printf("Deleted %d node(s) in the middle of list. "
                        "Head at %p\n", num, *headadd);
 
-                cmd = 'e';
+                cmd = EXIT;
                 break;
 
-            case 't': ;
+            case TAIL: ;
                 nodenum = count-num;
 
                 currentadd = travelList(headadd, nodenum);
@@ -346,10 +378,10 @@ void deleteNodeParamSet(struct Node** headadd)
                 printf("Deleted %d nodes at the end of list. "
                        "Head at %p\n", num, *headadd);
                 
-                cmd = 'e';
+                cmd = EXIT;
                 break;
 
-            case 'e':
+            case EXIT:
                 break;
 
             default:
@@ -398,5 +430,3 @@ struct Node** travelList(struct Node** headadd, int nodes)
     return walk;
     
 }
-
-
